@@ -1,0 +1,220 @@
+Entity:
+PatientGP 3 4
+null  * 
+Id String 3 false true false nhsNumber String 3 false false false name1 String 3 false false false name2 String 3 false false false dob int 3 false false false addr1 String 3 false false false addr2 String 3 false false false postcode String 3 false false false isMale boolean 3 false false false
+
+Operation:
+toString
+PatientGP
+String
+
+ query
+true
+result = name1 + " " + name2 + " " + nhsNumber
+
+
+Entity:
+Doctor 370 7
+null  * 
+name1 String 3 false false false name2 String 3 false false false surgery String 3 false false false staffNumber String 3 false true false
+
+Entity:
+Consultation 253 123
+null  * 
+date int 3 false false false outcome String 3 false false false symptoms String 3 false false false
+
+Operation:
+toString
+Consultation
+String
+
+ query
+true
+result = "Consultation on: " + date + " Symptoms: " + symptoms + " Outcome: " + outcome
+
+
+Entity:
+Referral 308 204
+null  * 
+date int 3 false false false referredTo String 3 false false false
+
+Association:
+PatientGP Doctor 0 138 50 371 51 0 registeredWith null 
+
+
+Association:
+PatientGP Consultation 1 139 152 253 153 0 consultations null 
+
+
+Association:
+Consultation Doctor 0 363 132 398 92 1 doctor null 
+
+
+Association:
+PatientGP Referral 1 112 162 310 240 0 referrals null 
+
+
+Association:
+Referral Doctor 0 415 206 477 90 1 referrer null 
+
+
+Entity:
+PatientH 476 24
+null  * 
+hospitalNumber String 3 false true false forename String 3 false false false surname String 3 false false false ageyrs int 3 false false false agemnths int 3 false false false ward String 3 false false false bed int 3 false false false inpatient boolean 3 false false false
+
+Entity:
+Treatment 770 27
+null  * 
+date int 3 false false false description String 3 false false false
+
+Entity:
+Investigation 500 248
+null  * 
+description String 3 false false false result String 3 false false false
+
+Entity:
+Clinician 801 260
+null  * 
+name String 3 false false false jobTitle String 3 false false false jobCode String 3 false true false
+
+Association:
+PatientH Treatment 1 691 26 771 31 0 treatments null 
+ordered 
+
+Association:
+PatientH Investigation 1 523 165 525 249 0 investigations null 
+
+
+Association:
+Investigation Clinician 0 634 255 803 267 0 clinicians null 
+
+
+Association:
+Treatment Clinician 0 804 78 808 261 0 clinicians null 
+
+
+Entity:
+Patient 12 318
+null  * 
+nhsNo String 3 false false false fname String 3 false false false sname String 3 false false false dob int 3 false false false address1 String 3 false false false address2 String 3 false false false Id String 3 false true false
+
+Entity:
+Staff 306 330
+null  * 
+fname String 3 false false false sname String 3 false false false staffcode String 3 false true false
+
+Entity:
+Intervention 260 475
+null  * 
+description String 3 false false false date int 3 false false false category String 3 false false false
+
+Entity:
+Location 535 477
+null  * 
+description String 3 false false false postcode String 3 false false false
+
+Association:
+Patient Intervention -1 144 444 260 483 0 interventions null 
+
+
+Association:
+Staff Intervention 0 321 399 319 475 0 interventions null 
+
+
+Association:
+Intervention Location 0 395 481 535 484 -1 location null 
+
+
+
+
+
+
+GeneralUseCase:
+check 
+
+
+
+
+Constraint:
+Id = ""
+null
+( "Patient " + self + " has no Id value" )->display()
+PatientGP check
+false
+
+
+
+Constraint:
+name = ""
+null
+( "Patient " + self + " has no name value" )->display()
+PatientGP check
+false
+
+
+
+Constraint:
+dob = ""
+null
+( "Patient " + self + " has no dob value" )->display()
+PatientGP check
+false
+
+
+
+Constraint:
+address = ""
+null
+( "Patient " + self + " has no address value" )->display()
+PatientGP check
+false
+
+
+
+Constraint:
+p : PatientGP
+p.Id /= Id & p.name1 = name1 & p.name2 = name2 & p.dob = dob
+( "Duplicate patients?: " + self + " and " + p )->display()
+PatientGP check
+false
+
+
+
+Constraint:
+p : PatientGP
+p.Id /= Id & p.name1 = name1 & p.name2 = name2 & p.dob = dob & p.gener = gender
+( "Duplicate patients?: " + self + " and " + p )->display()
+PatientGP check
+false
+
+
+
+Constraint:
+null
+referrals.referredTo->includes("optician")
+( "Patient: " + self + " was referred to an optician" )->display()
+PatientGP check
+false
+
+
+
+
+
+
+
+GeneralUseCase:
+migrateGP 
+
+
+
+
+Constraint:
+null
+true
+Patient->exists( q | q.Id = Id & q.nhsNo = nhsNumber & q.fname = name1 & q.sname = name2 & q.dob = dob & q.address1 = addr1 & q.address2 = addr2 )
+PatientGP migrateGP
+false
+
+
+

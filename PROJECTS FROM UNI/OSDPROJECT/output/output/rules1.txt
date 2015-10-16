@@ -1,0 +1,120 @@
+
+
+GeneralUseCase:
+check 
+
+
+
+
+Constraint:
+Id = ""
+null
+( "Patient " + self + " has no Id value" )->display()
+PatientGP check
+false
+
+Constraint:
+dob = 0
+null
+( "Patient " + self + " has no DOB value" )->display()
+PatientGP check
+false
+
+Constraint:
+name1 = ""
+null
+( "Patient " + self + " has no firstname value" )->display()
+PatientGP check
+false
+
+Constraint:
+name2 = ""
+null
+( "Patient " + self + " has no surname value" )->display()
+PatientGP check
+false
+
+Constraint:
+addr1 = "" or addr2 = "" or postcode = ""
+null
+( "Patient " + self + " has missing address value" )->display()
+PatientGP check
+false
+
+Constraint:
+p : PatientGP
+p.Id /= Id & p.name1 = name1 & p.name2 = name2 & p.dob = dob & p.isMale = isMale
+( "Duplicate patients?: " + self + " and " + p )->display()
+PatientGP check
+false
+
+
+
+GeneralUseCase:
+task2
+
+
+
+
+GeneralUseCase:
+task2
+
+
+
+
+Constraint:
+null
+nhsNumber = "patientGP0"
+consultations->sortedBy(date)->display()
+PatientGP task2
+false
+
+Constraint:
+null
+nhsNumber = "patientGP8"
+referrals->sortedBy(date)->display()
+PatientGP task2
+false
+
+
+
+
+GeneralUseCase:
+migrateGP 
+
+
+
+
+Constraint:
+null
+true
+Patient->exists( q | q.Id = Id & q.nhsNo = nhsNumber & q.fname = name1 & q.sname = name2 & q.dob = dob & q.address1 = addr1 & q.address2 = addr2 )
+PatientGP migrateGP
+false
+
+Constraint:
+null
+referrals.referredTo->includes("optician")
+( "Patient: " + self + " was referred to an optician" )->display()
+PatientGP migrateGP
+false
+
+
+
+
+GeneralUseCase:
+task3
+
+
+
+
+Constraint:
+null
+PatientH->exists( q | q.forename = name1 & q.surname = name2 & q.agemnths = (20141200 - dob)/100 & q.ageyrs = (2014 - (dob / 10000))
+(self)->display()
+PatientGP task3
+false
+
+
+
+

@@ -1,0 +1,42 @@
+
+Use Case, name: check
+Parameters: []
+Result type: null
+Superclass: null
+Description: 
+Attributes: 
+Operations: 
+Postcondition 0 is: Id = "" => ( "Patient " + self + " has no Id value" )->display() on [] owner PatientGP
+
+complexity = 6
+
+Postcondition 1 is: p : PatientGP & p.Id /= Id & p.name1 = name1 & p.name2 = name2 & p.dob = dob => ( "Duplicate patients?: " + self + " and " + p )->display() on [] owner PatientGP
+
+complexity = 23
+
+Postcondition 2 is: referrals.referredTo->includes("optician") => ( "Patient: " + self + " was referred to an optician" )->display() on [] owner PatientGP
+
+complexity = 7
+
+Behaviour code: 
+
+Activity: 
+null
+
+
+Use Case, name: migrateGP
+Parameters: []
+Result type: null
+Superclass: null
+Description: 
+Attributes: 
+Operations: 
+Postcondition 0 is: true => Patient->exists( q | q.Id = Id & q.nhsNo = nhsNumber & q.fname = name1 & q.sname = name2 & q.dob = dob & q.address1 = addr1 & q.address2 = addr2 ) on [] owner PatientGP
+
+complexity = 29
+
+Behaviour code: 
+
+Activity: 
+null
+

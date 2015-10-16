@@ -1,0 +1,32 @@
+Entity:
+Patient 12 318
+null  * 
+nhsNo String 3 false false false fname String 3 false false false sname String 3 false false false dob int 3 false false false address1 String 3 false false false address2 String 3 false false false Id String 3 false true false
+
+Entity:
+Staff 306 330
+null  * 
+fname String 3 false false false sname String 3 false false false staffcode String 3 false true false
+
+Entity:
+Intervention 260 475
+null  * 
+description String 3 false false false date int 3 false false false category String 3 false false false
+
+Entity:
+Location 535 477
+null  * 
+description String 3 false false false postcode String 3 false false false
+
+Association:
+Patient Intervention -1 144 444 260 483 0 interventions null 
+
+
+Association:
+Staff Intervention 0 321 399 319 475 0 interventions null 
+
+
+Association:
+Intervention Location 0 395 481 535 484 -1 location null 
+
+

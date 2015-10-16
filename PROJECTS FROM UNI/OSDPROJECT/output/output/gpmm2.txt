@@ -1,0 +1,36 @@
+Entity:
+PatientH 476 24
+null  * 
+hospitalNumber String 3 false true false forename String 3 false false false surname String 3 false false false ageyrs int 3 false false false agemnths int 3 false false false ward String 3 false false false bed int 3 false false false inpatient boolean 3 false false false
+
+Entity:
+Treatment 770 27
+null  * 
+date int 3 false false false description String 3 false false false
+
+Entity:
+Investigation 500 248
+null  * 
+description String 3 false false false result String 3 false false false
+
+Entity:
+Clinician 801 260
+null  * 
+name String 3 false false false jobTitle String 3 false false false jobCode String 3 false true false
+
+Association:
+PatientH Treatment 1 691 26 771 31 0 treatments null 
+ordered 
+
+Association:
+PatientH Investigation 1 523 165 525 249 0 investigations null 
+
+
+Association:
+Investigation Clinician 0 634 255 803 267 0 clinicians null 
+
+
+Association:
+Treatment Clinician 0 804 78 808 261 0 clinicians null 
+
+
